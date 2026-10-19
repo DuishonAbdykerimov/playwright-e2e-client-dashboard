@@ -4,7 +4,7 @@ import amqp from 'amqplib';
 export class QueueClient {
     constructor() {
         // Строка подключения с дефолтными логином и паролем guest:guest
-        this.url = 'amqp://guest:guest@localhost:5672';
+        this.url = process.env.RABBITMQ_URL ?? 'amqp://guest:guest@localhost:5672';
         this.connection = null;
         this.channel = null;
     }

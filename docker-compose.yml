@@ -46,5 +46,32 @@ services:
       retries: 12
       start_period: 20s
 
+  e2e:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ECOM_USER_EMAIL: ${ECOM_USER_EMAIL:-}
+      ECOM_USER_PASSWORD: ${ECOM_USER_PASSWORD:-}
+      POSTGRES_HOST: postgres_db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: qa_user
+      POSTGRES_PASSWORD: qa_password123
+      POSTGRES_DB: ecom_test_db
+      REDIS_URL: redis://redis_cache:6379
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq_broker:5672
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      redis_cache:
+        condition: service_healthy
+      rabbitmq_broker:
+        condition: service_healthy
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+      - ./allure-results:/app/allure-results
+
 volumes:
   pgdata:

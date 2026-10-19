@@ -6,11 +6,11 @@ export class DbClient {
     constructor() {
         // Передаем настройки подключения ровно те, что мы прописали в docker-compose.yml
         this.pool = new Pool({
-            user: 'qa_user',
-            host: 'localhost',
-            database: 'ecom_test_db',
-            password: 'qa_password123',
-            port: 5432,
+            user: process.env.POSTGRES_USER ?? 'qa_user',
+            host: process.env.POSTGRES_HOST ?? 'localhost',
+            database: process.env.POSTGRES_DB ?? 'ecom_test_db',
+            password: process.env.POSTGRES_PASSWORD ?? 'qa_password123',
+            port: Number(process.env.POSTGRES_PORT ?? 5432),
         });
     }
 

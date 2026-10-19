@@ -5,7 +5,7 @@ export class RedisClient {
     constructor() {
         // Подключаемся к Redis на стандартный порт 6379, который мы прописали в Докере
         this.client = createClient({
-            url: 'redis://localhost:6379'
+            url: process.env.REDIS_URL ?? 'redis://localhost:6379'
         });
 
         // Обработка ошибок подключения, чтобы тест не вис в случае чего

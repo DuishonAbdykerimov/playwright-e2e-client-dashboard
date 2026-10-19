@@ -33,7 +33,7 @@
 
 **Playwright Infra E2E** is a JavaScript automation project that demonstrates how to test beyond the browser. It combines a hybrid API/browser scenario with integration checks for a local PostgreSQL database, Redis cache, and RabbitMQ message broker.
 
-The infrastructure services run locally through Docker Compose. Playwright Test runs the suite in Chromium, while the HTML and Allure reporters provide test results and debugging evidence.
+The infrastructure services and the Playwright test runner can run together through Docker Compose. Playwright Test runs the suite in Chromium, while the HTML and Allure reporters provide test results and debugging evidence.
 
 > **Scope note:** PostgreSQL, Redis, and RabbitMQ are standalone services used by this project's integration tests. They are not represented as internal components of the external demo e-commerce application.
 
@@ -48,7 +48,7 @@ The infrastructure services run locally through Docker Compose. Playwright Test 
 
 The API/browser scenario requires a valid demo-app account, provided through `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD`. Credentials are not committed to the repository.
 
-GitHub Actions starts the PostgreSQL, Redis, and RabbitMQ services before running the suite. The API/browser scenario is reported as skipped when its credentials are not configured; add `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD` under **Repository Settings → Secrets and variables → Actions** to enable it in CI.
+GitHub Actions builds and runs the Playwright container with Docker Compose, which starts PostgreSQL, Redis, and RabbitMQ and waits for their health checks. The API/browser scenario is reported as skipped when its credentials are not configured; add `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD` under **Repository Settings → Secrets and variables → Actions** to enable it in CI.
 
 ## 🧱 Technology stack
 
@@ -138,19 +138,27 @@ set +a
 
 In GitHub Actions, the API/browser test is skipped if its credentials are not configured. To enable it, add repository Actions secrets named `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD`.
 
-### 3. Start local infrastructure
+### 3. Run the full project in Docker
 
 ```bash
-docker compose up -d
+docker compose --profile test run --build --rm e2e
 ```
 
-This starts PostgreSQL on `localhost:5432`, Redis on `localhost:6379`, and RabbitMQ on `localhost:5672`. The RabbitMQ management console is available at [http://localhost:15672](http://localhost:15672).
+Compose builds the Playwright test image, starts PostgreSQL, Redis, and RabbitMQ, waits for their health checks, then runs the suite in Chromium. The Playwright container connects to the infrastructure using Compose service names. Test reports and artifacts are saved to the project directory.
+
+The RabbitMQ management console is available at [http://localhost:15672](http://localhost:15672) while the services are running.
 
 > The credentials in `docker-compose.yml` are local development defaults for this disposable test environment. Do not reuse them for a public or production deployment.
 
-### 4. Run the test suite
+### Alternative: run tests on your host
 
 ```bash
+# Start the infrastructure services
+docker compose up -d
+
+# Install dependencies and browsers on the host, then run tests
+npm ci
+npx playwright install
 npm test
 ```
 
@@ -186,16 +194,10 @@ To also remove the local PostgreSQL volume and its data, use `docker compose dow
 ├── queue/               # RabbitMQ client
 ├── tests/               # API/browser and infrastructure test specs
 ├── .env.example         # Environment variable template
-├── docker-compose.yml   # Local PostgreSQL, Redis, and RabbitMQ services
+├── Dockerfile           # Playwright test-runner image
+├── docker-compose.yml   # Test runner and local infrastructure services
 └── playwright.config.js # Browser project, reporters, and artifacts
 ```
-
-## 🗺️ Possible next steps
-
-- Add CI service containers for PostgreSQL, Redis, and RabbitMQ.
-- Store demo-app credentials as CI secrets.
-- Add readiness checks and health checks for infrastructure services.
-- Expand coverage with positive UI checkout and API validation scenarios.
 
 ## 🇷🇺 Русская версия
 
@@ -226,17 +228,25 @@ npx playwright install
 cp .env.example .env
 ```
 
-Добавьте учётные данные в `.env`, затем загрузите переменные в shell и запустите инфраструктуру с тестами:
+Добавьте учётные данные в `.env`, затем загрузите переменные в shell и запустите весь проект в Docker:
 
 ```bash
 set -a
 source .env
 set +a
-docker compose up -d
-npm test
+docker compose --profile test run --build --rm e2e
 ```
 
-Чтобы остановить сервисы: `docker compose down`.
+Команда соберёт контейнер Playwright, запустит PostgreSQL, Redis и RabbitMQ, дождётся их готовности и выполнит тесты. Отчёты сохранятся в папки проекта. Для остановки сервисов используйте `docker compose down`.
+
+Если хотите запускать тесты непосредственно на компьютере, сначала поднимите только инфраструктуру:
+
+```bash
+docker compose up -d
+npm ci
+npx playwright install
+npm test
+```
 
 ### Отчёты и артефакты
 
@@ -250,7 +260,7 @@ npm run allure:open
 
 Артефакты создаются локально в `test-results/`, `playwright-report/`, `allure-results/` и `allure-report/` и не коммитятся в репозиторий.
 
-GitHub Actions автоматически поднимает PostgreSQL, Redis и RabbitMQ. API/browser-тест пропускается, если в настройках Actions не заданы секреты `ECOM_USER_EMAIL` и `ECOM_USER_PASSWORD`.
+GitHub Actions собирает и запускает Playwright-контейнер через Docker Compose, который также поднимает PostgreSQL, Redis и RabbitMQ. API/browser-тест пропускается, если в настройках Actions не заданы секреты `ECOM_USER_EMAIL` и `ECOM_USER_PASSWORD`.
 
 ---
 
