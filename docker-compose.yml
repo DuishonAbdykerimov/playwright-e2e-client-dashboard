@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # 1. Слой Базы Данных (PostgreSQL)
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: qa_postgres
+    environment:
+      POSTGRES_USER: qa_user
+      POSTGRES_PASSWORD: qa_password123
+      POSTGRES_DB: ecom_test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # 2. Слой Кэша и Сессий (Redis)
+  redis_cache:
+    image: redis:7-alpine
+    container_name: qa_redis
+    ports:
+      - "6379:6379"
+
+  # 3. Слой Брокера Сообщений (RabbitMQ)
+  rabbitmq_broker:
+    image: rabbitmq:3-management-alpine
+    container_name: qa_rabbitmq
+    ports:
+      - "5672:5672"   # Порт для пересылки сообщений кодом
+      - "15672:15672" # Порт для красивой веб-панели управления
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  pgdata:
