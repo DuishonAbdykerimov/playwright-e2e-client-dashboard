@@ -48,6 +48,8 @@ The infrastructure services run locally through Docker Compose. Playwright Test 
 
 The API/browser scenario requires a valid demo-app account, provided through `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD`. Credentials are not committed to the repository.
 
+GitHub Actions starts the PostgreSQL, Redis, and RabbitMQ services before running the suite. The API/browser scenario is reported as skipped when its credentials are not configured; add `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD` under **Repository Settings → Secrets and variables → Actions** to enable it in CI.
+
 ## 🧱 Technology stack
 
 | Technology | How it is used |
@@ -132,7 +134,9 @@ source .env
 set +a
 ```
 
-`.env` is ignored by Git. Never commit real credentials. The API/browser test will stop with a clear error if either variable is missing.
+`.env` is ignored by Git. Never commit real credentials. The API/browser test is skipped if either variable is missing.
+
+In GitHub Actions, the API/browser test is skipped if its credentials are not configured. To enable it, add repository Actions secrets named `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD`.
 
 ### 3. Start local infrastructure
 
@@ -245,6 +249,8 @@ npm run allure:open
 ```
 
 Артефакты создаются локально в `test-results/`, `playwright-report/`, `allure-results/` и `allure-report/` и не коммитятся в репозиторий.
+
+GitHub Actions автоматически поднимает PostgreSQL, Redis и RabbitMQ. API/browser-тест пропускается, если в настройках Actions не заданы секреты `ECOM_USER_EMAIL` и `ECOM_USER_PASSWORD`.
 
 ---
 
