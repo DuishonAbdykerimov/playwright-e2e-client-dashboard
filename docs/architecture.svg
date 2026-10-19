@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="520" viewBox="0 0 1440 520" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1440" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101827"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="150" y1="100" x2="1260" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#67E8F9"/>
+      <stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#020617" flood-opacity=".35"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M1 1 8 5 1 9" stroke="#94A3B8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="520" rx="28" fill="url(#bg)"/>
+  <circle cx="1260" cy="80" r="180" fill="#6366F1" opacity=".08"/>
+  <circle cx="190" cy="470" r="220" fill="#06B6D4" opacity=".07"/>
+
+  <text x="76" y="82" fill="#A5B4FC" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="3">FULL-STACK QUALITY ENGINEERING</text>
+  <text x="76" y="137" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="36" font-weight="700">One test suite. Every layer.</text>
+  <text x="76" y="169" fill="#94A3B8" font-family="Arial, sans-serif" font-size="17">Browser flows, API behavior, databases, cache and messaging.</text>
+
+  <rect x="76" y="222" width="266" height="112" rx="18" fill="#1E293B" stroke="#475569" filter="url(#shadow)"/>
+  <rect x="76" y="222" width="5" height="112" rx="2.5" fill="#67E8F9"/>
+  <text x="101" y="260" fill="#67E8F9" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">ORCHESTRATION</text>
+  <text x="101" y="294" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="23" font-weight="700">Playwright Test</text>
+  <text x="101" y="318" fill="#94A3B8" font-family="Arial, sans-serif" font-size="14">Assertions · fixtures · artifacts</text>
+
+  <path d="M354 278h67" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="434" y="222" width="266" height="112" rx="18" fill="#1E293B" stroke="#475569" filter="url(#shadow)"/>
+  <rect x="434" y="222" width="5" height="112" rx="2.5" fill="#A78BFA"/>
+  <text x="459" y="260" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">APPLICATION LAYER</text>
+  <text x="459" y="294" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="23" font-weight="700">API + Browser</text>
+  <text x="459" y="318" fill="#94A3B8" font-family="Arial, sans-serif" font-size="14">Token flow · UI · mocked 500</text>
+
+  <path d="M712 278h67" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="792" y="222" width="566" height="112" rx="18" fill="#1E293B" stroke="#475569" filter="url(#shadow)"/>
+  <text x="819" y="254" fill="#FDE68A" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">LOCAL INFRASTRUCTURE · DOCKER COMPOSE</text>
+  <rect x="819" y="270" width="155" height="42" rx="10" fill="#0F172A" stroke="#334155"/>
+  <rect x="990" y="270" width="155" height="42" rx="10" fill="#0F172A" stroke="#334155"/>
+  <rect x="1161" y="270" width="170" height="42" rx="10" fill="#0F172A" stroke="#334155"/>
+  <text x="896" y="297" text-anchor="middle" fill="#93C5FD" font-family="Arial, sans-serif" font-size="15" font-weight="700">PostgreSQL</text>
+  <text x="1067" y="297" text-anchor="middle" fill="#FCA5A5" font-family="Arial, sans-serif" font-size="15" font-weight="700">Redis</text>
+  <text x="1246" y="297" text-anchor="middle" fill="#FDBA74" font-family="Arial, sans-serif" font-size="15" font-weight="700">RabbitMQ</text>
+
+  <path d="M568 342v47h241" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 7"/>
+  <path d="M1030 342v47H809" stroke="#64748B" stroke-width="1.5" stroke-dasharray="6 7" marker-end="url(#arrow)"/>
+  <rect x="345" y="391" width="750" height="63" rx="16" fill="#0F172A" stroke="#334155"/>
+  <text x="720" y="418" text-anchor="middle" fill="#E2E8F0" font-family="Arial, sans-serif" font-size="15" font-weight="700">AUTOMATED EVIDENCE</text>
+  <text x="720" y="440" text-anchor="middle" fill="#94A3B8" font-family="Arial, sans-serif" font-size="14">HTML + Allure reports · screenshots · video · trace on failure</text>
+
+  <text x="76" y="488" fill="#64748B" font-family="Arial, sans-serif" font-size="12" letter-spacing="1.5">JAVASCRIPT  ·  DOCKER  ·  PLAYWRIGHT</text>
+  <text x="1360" y="488" text-anchor="end" fill="url(#accent)" font-family="Arial, sans-serif" font-size="13" font-weight="700">PLAYWRIGHT INFRA E2E</text>
+</svg>
