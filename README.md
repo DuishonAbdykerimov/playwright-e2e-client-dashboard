@@ -170,6 +170,15 @@ npx playwright test tests/redis-test.spec.js
 npx playwright test tests/queue-test.spec.js
 ```
 
+Run the Kubernetes PostgreSQL test after applying its manifest and making sure the Kubernetes cluster is running and selected in the current `kubectl` context. The test starts and stops a temporary port-forward automatically:
+
+```bash
+kubectl apply -f k8s/postgres-k8s.yaml
+npx playwright test tests/db-k8s-test.spec.js
+```
+
+To connect directly to a database at a different address, set `K8S_POSTGRES_HOST` and `K8S_POSTGRES_PORT`; setting the host disables the automatic port-forward.
+
 Run only the API/browser spec:
 
 ```bash

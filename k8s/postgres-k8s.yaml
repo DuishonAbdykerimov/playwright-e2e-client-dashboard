@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-postgres-deployment
+  labels:
+    app: k8s-postgres
+spec:
+  replicas: 1 # Указываем Кубернетесу держать строго 1 экземпляр (Под) базы данных
+  selector:
+    matchLabels:
+      app: k8s-postgres
+  template:
+    metadata:
+      labels:
+        app: k8s-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "qa_user"
+            - name: POSTGRES_PASSWORD
+              value: "qa_password123"
+            - name: POSTGRES_DB
+              value: "ecom_test_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-postgres-service
+spec:
+  type: NodePort # Пробрасываем сетевой порт из Кубера наружу на твой Mac
+  selector:
+    app: k8s-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30432 # База K8s будет доступна на твоем Mac по этому специальному порту
