@@ -62,6 +62,7 @@ GitHub Actions builds and runs the Playwright container with Docker Compose, whi
 | **Redis 7 + `redis`** | Cache integration test |
 | **RabbitMQ 3 + `amqplib`** | AMQP publish/consume integration test |
 | **Docker Compose** | Local, repeatable infrastructure setup |
+| **Kubernetes** | PostgreSQL deployment and integration test through a temporary port-forward |
 | **HTML reporter + Allure** | Test reporting |
 
 ## 🎬 Reports & debugging artifacts
