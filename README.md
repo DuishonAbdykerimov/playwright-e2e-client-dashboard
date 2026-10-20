@@ -144,7 +144,7 @@ In GitHub Actions, the API/browser test is skipped if its credentials are not co
 docker compose --profile test run --build --rm e2e
 ```
 
-Compose builds the Playwright test image, starts PostgreSQL, Redis, and RabbitMQ, waits for their health checks, then runs the suite in Chromium. The Playwright container connects to the infrastructure using Compose service names. Test reports and artifacts are saved to the project directory.
+Compose builds the Playwright test image, starts PostgreSQL, Redis, and RabbitMQ, waits for their health checks, then runs the suite in Chromium. The Playwright container connects to the infrastructure using Compose service names. The Kubernetes PostgreSQL test is skipped in this container because it has no Kubernetes cluster or `kubectl`; run that test from the host as described below. Test reports and artifacts are saved to the project directory.
 
 The RabbitMQ management console is available at [http://localhost:15672](http://localhost:15672) while the services are running.
 

@@ -71,6 +71,11 @@ async function stopPortForward(child) {
 }
 
 test('Проверка интеграции автотеста с базой данных внутри Kubernetes', async () => {
+    test.skip(
+        process.env.K8S_POSTGRES_SKIP === 'true',
+        'Kubernetes PostgreSQL test is not available in the Docker Compose test container.',
+    );
+
     const portForward = process.env.K8S_POSTGRES_HOST
         ? null
         : await startPortForward();

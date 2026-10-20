@@ -59,6 +59,7 @@ services:
       POSTGRES_USER: qa_user
       POSTGRES_PASSWORD: qa_password123
       POSTGRES_DB: ecom_test_db
+      K8S_POSTGRES_SKIP: "true"
       REDIS_URL: redis://redis_cache:6379
       RABBITMQ_URL: amqp://guest:guest@rabbitmq_broker:5672
     depends_on:
