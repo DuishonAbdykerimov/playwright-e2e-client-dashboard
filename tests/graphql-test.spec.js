@@ -39,3 +39,4 @@ test('Проверка интеграции с GraphQL: Получение да�
 
     console.log(`[GraphQL Success]: Данные проверены. CEO компании ${companyData.name} — это действительно ${companyData.ceo}.`);
 });
+// Тестовый комментарий для проверки Pull Request и Code Review
