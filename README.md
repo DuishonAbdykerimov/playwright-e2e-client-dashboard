@@ -42,6 +42,7 @@ The infrastructure services and the Playwright test runner can run together thro
 | Test area | What it verifies |
 |---|---|
 | **API + browser** | Authenticates against the demo application's API, retrieves a product, creates an order, and cleans it up after the test run. A browser test injects the token before page scripts execute, mocks the order-history API with HTTP `500`, and verifies the response status. |
+| **GraphQL** | Queries the SpaceX GraphQL API and verifies the company's name, founder, and CEO. |
 | **PostgreSQL** | Creates a test table if needed, inserts a uniquely identified row, reads it back, and checks the returned data. |
 | **Redis** | Writes a mock session value to Redis and verifies it can be read back. |
 | **RabbitMQ** | Publishes a JSON order message to a queue, consumes it, and checks its fields. |
@@ -56,6 +57,7 @@ GitHub Actions builds and runs the Playwright container with Docker Compose, whi
 |---|---|
 | **Playwright Test** | Test runner, browser automation, API requests, assertions, network interception, and test artifacts |
 | **JavaScript (ES Modules)** | Project language and module system |
+| **GraphQL API** | SpaceX company information query |
 | **PostgreSQL 15 + `pg`** | SQL integration test |
 | **Redis 7 + `redis`** | Cache integration test |
 | **RabbitMQ 3 + `amqplib`** | AMQP publish/consume integration test |
@@ -165,6 +167,7 @@ npm test
 Run an individual infrastructure test:
 
 ```bash
+npx playwright test tests/graphql-test.spec.js
 npx playwright test tests/db-test.spec.js
 npx playwright test tests/redis-test.spec.js
 npx playwright test tests/queue-test.spec.js
