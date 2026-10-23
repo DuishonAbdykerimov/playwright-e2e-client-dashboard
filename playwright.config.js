@@ -17,8 +17,8 @@ export default defineConfig({
     baseURL: 'https://rahulshettyacademy.com',
 
     trace: 'retain-on-failure',
-    screenshot: 'on',
-    video: 'on',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
 
   projects: [

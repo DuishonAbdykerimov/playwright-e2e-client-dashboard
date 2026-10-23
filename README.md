@@ -19,6 +19,7 @@
   <a href="#-overview">Overview</a> ·
   <a href="#-test-coverage">Test coverage</a> ·
   <a href="#-quick-start">Quick start</a> ·
+  <a href="#-monitoring-and-load-test">Monitoring</a> ·
   <a href="#-reports--debugging-artifacts">Reports</a> ·
   <a href="#-project-structure">Project structure</a>
 </p>
@@ -46,6 +47,7 @@ The infrastructure services and the Playwright test runner can run together thro
 | **PostgreSQL** | Creates a test table if needed, inserts a uniquely identified row, reads it back, and checks the returned data. |
 | **Redis** | Writes a mock session value to Redis and verifies it can be read back. |
 | **RabbitMQ** | Publishes a JSON order message to a queue, consumes it, and checks its fields. |
+| **RabbitMQ load test** | Publishes 100 test messages, leaves them available for 15 seconds, then drains the queue. |
 
 The API/browser scenario requires a valid demo-app account, provided through `ECOM_USER_EMAIL` and `ECOM_USER_PASSWORD`. Credentials are not committed to the repository.
 
@@ -62,12 +64,27 @@ GitHub Actions builds and runs the Playwright container with Docker Compose, whi
 | **Redis 7 + `redis`** | Cache integration test |
 | **RabbitMQ 3 + `amqplib`** | AMQP publish/consume integration test |
 | **Docker Compose** | Local, repeatable infrastructure setup |
+| **Prometheus + Grafana** | RabbitMQ metrics scraping and metrics dashboard service |
+| **Elasticsearch + Kibana** | Local search and data exploration services |
 | **Kubernetes** | PostgreSQL deployment and integration test through a temporary port-forward |
 | **HTML reporter + Allure** | Test reporting |
 
+## 📊 Monitoring and load test
+
+Docker Compose also starts Prometheus, Grafana, Elasticsearch, and Kibana:
+
+| Service | URL |
+|---|---|
+| Prometheus | [http://localhost:9090](http://localhost:9090) |
+| Grafana | [http://localhost:3000](http://localhost:3000) (default local login: `admin` / `admin`) |
+| Elasticsearch | [http://localhost:9200](http://localhost:9200) |
+| Kibana | [http://localhost:5601](http://localhost:5601) |
+
+Prometheus uses `monitoring/prometheus.yml` to scrape the RabbitMQ metrics endpoint on port `15692`. Run the load-test spec independently with `npx playwright test tests/queue-load-test.spec.js`; RabbitMQ must be running. The test publishes 100 sample messages, waits 15 seconds, then drains the queue.
+
 ## 🎬 Reports & debugging artifacts
 
-The Playwright configuration records a **screenshot and video for every test**. A **trace is retained when a test fails**, which can be inspected with Playwright's Trace Viewer.
+The Playwright configuration records a **screenshot, video, and trace only when a test fails**. These artifacts can be inspected with Playwright's Trace Viewer.
 
 Run the tests first, then open the reports:
 
@@ -203,6 +220,7 @@ To also remove the local PostgreSQL volume and its data, use `docker compose dow
 ├── API/                 # API client for the demo e-commerce application
 ├── database/            # PostgreSQL and Redis clients
 ├── docs/                # Project architecture illustration
+├── monitoring/          # Prometheus scrape configuration
 ├── pages/               # Page Object Model classes
 ├── queue/               # RabbitMQ client
 ├── tests/               # API/browser and infrastructure test specs
@@ -226,6 +244,7 @@ To also remove the local PostgreSQL volume and its data, use `docker compose dow
 | **PostgreSQL** | Создание таблицы, запись уникальной строки и проверка чтения данных. |
 | **Redis** | Запись mock-значения сессии и чтение его обратно. |
 | **RabbitMQ** | Публикация JSON-сообщения, чтение из очереди и проверка полей. |
+| **Нагрузочный тест RabbitMQ** | Публикация 100 тестовых сообщений, ожидание 15 секунд и очистка очереди. |
 
 Для API/browser-теста нужны `ECOM_USER_EMAIL` и `ECOM_USER_PASSWORD` — учётные данные demo-приложения. Не сохраняйте их в Git.
 
@@ -251,6 +270,19 @@ docker compose --profile test run --build --rm e2e
 ```
 
 Команда соберёт контейнер Playwright, запустит PostgreSQL, Redis и RabbitMQ, дождётся их готовности и выполнит тесты. Отчёты сохранятся в папки проекта. Для остановки сервисов используйте `docker compose down`.
+
+### Мониторинг и нагрузочный тест
+
+Docker Compose также запускает Prometheus, Grafana, Elasticsearch и Kibana:
+
+| Сервис | Адрес |
+|---|---|
+| Prometheus | [http://localhost:9090](http://localhost:9090) |
+| Grafana | [http://localhost:3000](http://localhost:3000) (локальный вход по умолчанию: `admin` / `admin`) |
+| Elasticsearch | [http://localhost:9200](http://localhost:9200) |
+| Kibana | [http://localhost:5601](http://localhost:5601) |
+
+Prometheus использует `monitoring/prometheus.yml` для сбора метрик RabbitMQ через порт `15692`. Нагрузочный тест можно запустить отдельно командой `npx playwright test tests/queue-load-test.spec.js`; для него должен быть запущен RabbitMQ. Тест публикует 100 примеров сообщений, ждёт 15 секунд и затем очищает очередь.
 
 Если хотите запускать тесты непосредственно на компьютере, сначала поднимите только инфраструктуру:
 
