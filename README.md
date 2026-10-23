@@ -80,7 +80,7 @@ Docker Compose also starts Prometheus, Grafana, Elasticsearch, and Kibana:
 | Elasticsearch | [http://localhost:9200](http://localhost:9200) |
 | Kibana | [http://localhost:5601](http://localhost:5601) |
 
-Prometheus uses `monitoring/prometheus.yml` to scrape the RabbitMQ metrics endpoint on port `15692`. Run the load-test spec independently with `npx playwright test tests/queue-load-test.spec.js`; RabbitMQ must be running. The test publishes 100 sample messages, waits 15 seconds, then drains the queue.
+Prometheus uses `monitoring/prometheus.yml` to scrape the RabbitMQ metrics endpoint on port `15692`. Run the load-test spec independently with `npx playwright test tests/queue-load-test.spec.js`; RabbitMQ must be running. The test publishes 100 sample messages to its own queue, waits 15 seconds, then drains that queue without interfering with the RabbitMQ integration test.
 
 ## 🎬 Reports & debugging artifacts
 
@@ -282,7 +282,7 @@ Docker Compose также запускает Prometheus, Grafana, Elasticsearch 
 | Elasticsearch | [http://localhost:9200](http://localhost:9200) |
 | Kibana | [http://localhost:5601](http://localhost:5601) |
 
-Prometheus использует `monitoring/prometheus.yml` для сбора метрик RabbitMQ через порт `15692`. Нагрузочный тест можно запустить отдельно командой `npx playwright test tests/queue-load-test.spec.js`; для него должен быть запущен RabbitMQ. Тест публикует 100 примеров сообщений, ждёт 15 секунд и затем очищает очередь.
+Prometheus использует `monitoring/prometheus.yml` для сбора метрик RabbitMQ через порт `15692`. Нагрузочный тест можно запустить отдельно командой `npx playwright test tests/queue-load-test.spec.js`; для него должен быть запущен RabbitMQ. Тест публикует 100 примеров сообщений в отдельную очередь, ждёт 15 секунд и затем очищает её, не мешая обычному RabbitMQ-тесту.
 
 Если хотите запускать тесты непосредственно на компьютере, сначала поднимите только инфраструктуру:
 

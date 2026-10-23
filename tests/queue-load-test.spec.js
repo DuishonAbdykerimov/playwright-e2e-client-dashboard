@@ -4,7 +4,7 @@ import { QueueClient } from '../queue/QueueClient.js';
 
 test('Нагрузочный тест для мониторинга Grafana: Отправка 100 сообщений', async () => {
     const queueCtrl = new QueueClient();
-    const queueName = 'ecom_orders_queue';
+    const queueName = 'ecom_orders_load_test_queue';
 
     console.log('[Grafana Load] Начинаем массированную отправку сообщений...');
 
